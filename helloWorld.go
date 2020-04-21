@@ -3,11 +3,18 @@ package main
 import (
 	"fmt"
 	"math"
+	"math/cmplx"
 )
 
 var x, y, z int = 1, 2, 3                //inician como 0 si no se define valor
 var bulean bool                          //inician como false si no se define valor
 var c, python, java = true, false, "no!" //se puden juntar varias si no se define el tipo
+
+var (
+	ToBe    bool       = false
+	MaxInt  uint64     = 1<<64 - 1
+	Complex complex128 = cmplx.Sqrt(-5 + 12i)
+)
 
 const Pi = 3.14 //Las constantes pueden ser caracteres, cadenas de caracteres, Booleanos, o valores numéricos.
 const World = "世界"
@@ -17,6 +24,12 @@ const (
 	Big   = 1 << 100  // una veces por 2, 100 veces -> 2 elevado a la 100
 	Small = Big >> 99 // big veces entre 2, 99 veces -> 2 elevado a la 100 entre 2 elevado a la 99
 )
+
+//struct es una coleccion de campos, y type declara el tipo
+type Vertex struct {
+	X int
+	Y int
+}
 
 func main() {
 	helloWorld()
@@ -40,6 +53,34 @@ func main() {
 	bucleFor(10)
 	bucleForLight()
 
+	fmt.Println(sqrt(2), sqrt(-4))
+
+	fmt.Println(
+		pow(3, 2, 10),
+		pow(3, 3, 20),
+	)
+
+	basicTypes(ToBe, MaxInt, Complex)
+
+	fmt.Println(Vertex{1, 2})
+	fmt.Printf("Tipo: %T\n", Vertex{1, 2})
+	ver := Vertex{1, 2}
+	ver.X = 4
+	fmt.Println(ver)
+
+	ver2 := &ver //cualquier cambio que se haga a ver2, se aplicara a ver, ya que son punteros....
+	ver2.X = 1e9
+	fmt.Println(ver, ver2)
+	ver.X = 2 //.... y viceversa
+	fmt.Println(ver, ver2)
+
+	var (
+		p = Vertex{1, 2}  // has type Vertex
+		q = &Vertex{1, 2} // has type *Vertex
+		r = Vertex{X: 1}  // Y:0 is implicit
+		s = Vertex{}      // X:0 and Y:0
+	)
+	fmt.Println(p, q, r, s)
 }
 
 func helloWorld() {
@@ -80,4 +121,31 @@ func bucleForLight() {
 		sum += sum
 	}
 	fmt.Println("La suma es", sum)
+}
+
+func sqrt(x float64) string {
+	if x < 0 {
+		return sqrt(-x) + "i"
+	}
+	return fmt.Sprint(math.Sqrt(x))
+}
+
+func pow(x, n, lim float64) float64 {
+	if v := math.Pow(x, n); v < lim {
+		return v
+	} else {
+		fmt.Printf("%g >= %g\n", v, lim)
+	}
+	// las variables declaradas en if solo valen para este condicional, fuera no se pueden usar
+	//fmt.Println(v, "hola") undefined si descomentamos
+	return lim
+}
+
+func basicTypes(ToBe bool, MaxInt uint64, a complex128) {
+	const f = "%T(%v)\n"
+	// %T substituye por el tipo de variable
+	// %v sustiuye por el valor
+	fmt.Printf(f, ToBe, ToBe)
+	fmt.Printf(f, MaxInt, MaxInt)
+	fmt.Printf(f, a, a)
 }
