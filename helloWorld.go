@@ -81,6 +81,15 @@ func main() {
 		s = Vertex{}      // X:0 and Y:0
 	)
 	fmt.Println(p, q, r, s)
+
+	v := new(Vertex)
+	fmt.Println(v)
+	v.X, v.Y = 11, 9
+	fmt.Println(v)
+
+	maps()
+	literalesMaps()
+	moddingMaps()
 }
 
 func helloWorld() {
@@ -148,4 +157,58 @@ func basicTypes(ToBe bool, MaxInt uint64, a complex128) {
 	fmt.Printf(f, ToBe, ToBe)
 	fmt.Printf(f, MaxInt, MaxInt)
 	fmt.Printf(f, a, a)
+}
+
+func maps() {
+	type empresas struct {
+		string1, string2 string
+	}
+
+	//var m map[string]empresas
+
+	/* Un map asocia un valor a cada llave.
+	** Antes de usar un map, hay que crearlo con make (en vez de con new); y el map nil por definición está vacío y no se le puede añadir nada.
+	 */
+	m := make(map[string]empresas)
+	m["Taco Bell"] = empresas{
+		"Producto", "Tacos",
+	}
+	m["Mediamarkt"] = empresas{
+		"Producto", "Electronica",
+	}
+	fmt.Println(m)
+}
+
+func literalesMaps() {
+
+	// Los literales de map son como los de las estructuras, pero las llaves son necesarias (en el ejemplo, "Bell Labs" y "Google").
+	type Vertex struct {
+		Lat, Long float64
+	}
+
+	m := map[string]Vertex{
+		"Bell Labs": {40.68433, -74.39967},
+		"Google":    {37.42202, -122.08408},
+	}
+
+	fmt.Println(m)
+}
+
+func moddingMaps() {
+	m := make(map[string]int)
+
+	m["Answer"] = 42
+	fmt.Println("The value:", m["Answer"])
+
+	m["Answer"] = 48
+	fmt.Println("The value:", m["Answer"])
+	// Si la llave key está en m, ok será true, Si no, ok será false y elem será el valor cero del tipo de los elementos.
+	v, ok := m["Answer"]
+	fmt.Println("The value:", v, "Present?", ok)
+
+	delete(m, "Answer")
+	fmt.Println("The value:", m["Answer"])
+
+	v, ok = m["Answer"]
+	fmt.Println("The value:", v, "Present?", ok)
 }
